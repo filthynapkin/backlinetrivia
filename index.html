@@ -272,12 +272,13 @@
         let timeLeft = 33;
         let overallTimeLeft = 213; // 3 minutes 33 seconds
 
-        // Start the game
+       // Start the game
         function startGame() {
             score = 0;
             currentScenarioIndex = 0;
             overallTimeLeft = 213;  // Reset the overall timer
             document.getElementById("score").innerText = `Score: ${score}`;
+            document.getElementById("start-button").style.display = "none"; // Hide start button after the game starts
             startOverallTimer();
             nextScenario();
         }
@@ -365,3 +366,4 @@
     </script>
 </body>
 </html>
+

@@ -262,7 +262,7 @@
                 explanation: "A loss of power to the DI box will cause it to stop working. Check the power source first."
             },
             // Add more scenarios (up to 33 total) here...
-        ];
+         ];
 
         let score = 0;
         let currentScenarioIndex = 0;
@@ -275,15 +275,18 @@
         function startGame() {
             score = 0;
             currentScenarioIndex = 0;
-            overallTimeLeft = 213;
+            overallTimeLeft = 213;  // Reset the overall timer
             document.getElementById("score").innerText = `Score: ${score}`;
-            document.getElementById("overall-timer").innerText = `Time left: 3m 33s`;
-            nextScenario();
             startOverallTimer();
+            nextScenario();
         }
 
         // Generate a new scenario
         function nextScenario() {
+            // Hide the "Next" button
+            document.getElementById("next-button").style.display = "none";
+            
+            // Check if the game is over
             if (currentScenarioIndex >= scenarios.length) {
                 alert("Game over! Your final score is " + score);
                 return;
@@ -309,9 +312,58 @@
         // Check if the selected answer is correct
         function checkAnswer(selectedIndex) {
             const scenario = scenarios[currentScenarioIndex];
+
+            // Disable answer buttons after selection
+            const buttons = document.querySelectorAll('#choices button');
+            buttons.forEach(button => button.disabled = true);
+
+            const explanationElement = document.getElementById("explanation");
             if (selectedIndex === scenario.correct) {
-                alert("Correct!");
+                explanationElement.innerHTML = `<strong>Correct!</strong> ${scenario.explanation}`;
                 score += 10;
+            } else {
+                explanationElement.innerHTML = `<strong>Wrong!</strong> ${scenario.explanation}`;
+                score -= 5;
+            }
+
+            document.getElementById("score").innerText = `Score: ${score}`;
+            explanationElement.style.display = "block";  // Show the explanation
+            document.getElementById("next-button").style.display = "block";  // Show "Next" button
+        }
+
+        // Start the timer for each scenario (33 seconds)
+        function startTimer() {
+            clearInterval(questionTimer);
+            timeLeft = 33;
+            questionTimer = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(questionTimer);
+                    checkAnswer(-1); // Automatically wrong answer if time runs out
+                }
+                timeLeft -= 1;
+            }, 1000);
+        }
+
+        // Start the overall game timer (3:33 total)
+        function startOverallTimer() {
+            const overallTimerBar = document.getElementById("overall-timer-bar");
+
+            clearInterval(overallTimer);
+            overallTimer = setInterval(() => {
+                const progressPercentage = (overallTimeLeft / 213) * 100;
+                overallTimerBar.style.width = progressPercentage + "%";  // Update progress bar width
+
+                if (overallTimeLeft <= 0) {
+                    clearInterval(overallTimer);  // Stop the timer
+                    alert("Time's up for the entire game!");
+                    return;
+                }
+                overallTimeLeft -= 1;  // Decrease the time left
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
             } else {
                 alert("Wrong answer!");
                 score -= 5;

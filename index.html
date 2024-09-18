@@ -262,9 +262,9 @@
                 explanation: "A loss of power to the DI box will cause it to stop working. Check the power source first."
             },
             // Add more scenarios (up to 33 total) here...
-         ];
+            ];
 
-        let score = 0;
+            let score = 0;
         let currentScenarioIndex = 0;
         let questionTimer;
         let overallTimer;
@@ -364,54 +364,3 @@
     </script>
 </body>
 </html>
-            } else {
-                alert("Wrong answer!");
-                score -= 5;
-            }
-            document.getElementById("score").innerText = `Score: ${score}`;
-            showExplanation(scenario.explanation);
-            currentScenarioIndex++;
-            nextScenario();
-        }
-
-        // Show explanation after each question
-        function showExplanation(explanation) {
-            document.getElementById("explanation").innerText = explanation;
-            document.getElementById("explanation").style.display = "block";
-        }
-
-        // Start the timer for each scenario (33 seconds)
-        function startTimer() {
-            clearInterval(questionTimer);
-            timeLeft = 33;
-            questionTimer = setInterval(() => {
-                document.getElementById("timer").innerText = `Time left: ${timeLeft}s`;
-                if (timeLeft <= 0) {
-                    alert("Time's up for this question!");
-                    checkAnswer(-1); // Automatically wrong answer if time runs out
-                }
-                timeLeft -= 1;
-            }, 1000);
-        }
-
-        // Start the overall game timer (3:33 total)
-        function startOverallTimer() {
-            clearInterval(overallTimer);
-            overallTimer = setInterval(() => {
-                let minutes = Math.floor(overallTimeLeft / 60);
-                let seconds = overallTimeLeft % 60;
-                document.getElementById("overall-timer").innerText = `Time left: ${minutes}m ${seconds < 10 ? '0' : ''}${seconds}s`;
-                if (overallTimeLeft <= 0) {
-                    alert("Time's up for the entire game!");
-                    clearInterval(overallTimer);
-                    // End the game
-                    currentScenarioIndex = scenarios.length; // This will prevent further questions
-                    return;
-                }
-                overallTimeLeft -= 1;
-            }, 1000);
-        }
-    </script>
-</body>
-</html>
-

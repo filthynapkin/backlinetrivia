@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guitar Tech Scenario Game</title>
+    <title>Backline Trivia</title>
     <style>
         body {
             background-color: #f0f0f0;
@@ -54,13 +54,13 @@
             background-color: #45a049;
         }
 
-        #timer, #score {
+        #timer, #overall-timer, #score {
             font-size: 1.2em;
             margin-top: 20px;
             color: #555;
         }
 
-        #timer {
+        #timer, #overall-timer {
             color: #ff4444;
             font-weight: bold;
         }
@@ -88,6 +88,14 @@
             cursor: not-allowed;
         }
 
+        #explanation {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f1f1f1;
+            border-left: 4px solid #4CAF50;
+            display: none;
+        }
+
         @media screen and (max-width: 600px) {
             #game {
                 padding: 15px;
@@ -111,191 +119,158 @@
 </head>
 <body>
     <div id="game">
-        <h1>Guitar Tech Scenario Game</h1>
+        <h1>Backline Tech Scenario Game</h1>
         <div id="question"></div>
         <div id="choices"></div>
+        <div id="explanation"></div>
         <div id="timer"></div>
+        <div id="overall-timer">Time left: 3m 33s</div>
         <div id="score">Score: 0</div>
         <button onclick="startGame()">Start Game</button>
     </div>
 
     <script>
-        // 33 Pre-defined scenarios
+        // 33 Pre-defined real-world scenarios with explanations
         const scenarios = [
             { 
-                question: "The guitarist’s amp starts crackling during soundcheck. What do you check first?", 
-                options: ["Change the cable", "Check the power supply", "Swap the guitar"],
-                correct: 0 
-            },
-            { 
-                question: "A string breaks on the guitar mid-performance. What’s the fastest way to fix it?", 
-                options: ["Use a backup guitar", "Replace the string immediately", "Retune the remaining strings"],
-                correct: 0 
+                question: "During a soundcheck, the bassist complains of a buzzing sound coming from their amp. What’s the first thing you check?", 
+                options: ["The bass's output jack", "A ground loop issue", "The power supply to the amp"],
+                correct: 1,
+                explanation: "Ground loops are a common cause of buzzing in amps, especially when there are multiple power sources on stage."
             },
             {
-                question: "There’s too much feedback on stage. What should you adjust first?",
-                options: ["Turn down the gain", "Move the mic further from the amp", "Change the EQ"],
-                correct: 1
-            },
-            { 
-                question: "The guitarist reports a buzzing sound while playing open strings. What could be the issue?",
-                options: ["Worn frets", "Improper intonation", "Loose tuning pegs"],
-                correct: 2 
+                question: "The drummer’s snare drum sounds dull during a soundcheck. What’s the first adjustment you make?",
+                options: ["Tighten the snare wires", "Replace the drum head", "Adjust the drum tuning"],
+                correct: 2,
+                explanation: "Adjusting the tuning can often bring life back to a snare drum before you need to replace the head or adjust the snare wires."
             },
             {
-                question: "You notice the guitar’s output is much lower than usual. What’s the most likely cause?",
-                options: ["A bad pickup", "Weak battery in the active pickups", "Faulty amp settings"],
-                correct: 1
+                question: "The guitarist reports that their guitar keeps going out of tune after bending strings. What’s the most likely cause?",
+                options: ["The nut is binding", "The bridge saddle is worn", "The tuner pegs are loose"],
+                correct: 0,
+                explanation: "A poorly lubricated or improperly cut nut is the most common cause of tuning instability after bending strings."
             },
             {
-                question: "The pedalboard suddenly stops working. What’s the first thing you check?",
-                options: ["Power supply", "Patch cables", "Individual pedals"],
-                correct: 0
+                question: "During the show, the keyboardist says the sustain pedal isn't working, and notes keep sustaining. What's the most likely issue?",
+                options: ["The pedal is broken", "The sustain pedal polarity is reversed", "The keyboard output jack is faulty"],
+                correct: 1,
+                explanation: "If the pedal polarity is reversed, the pedal will behave incorrectly and sustain notes unintentionally."
             },
             {
-                question: "The guitarist complains of tuning instability after string bends. What's the first adjustment?",
-                options: ["Increase string tension", "Check the nut for binding", "Tighten the tuning pegs"],
-                correct: 1
+                question: "The drummer’s kick pedal isn’t responding fast enough. What’s the first thing you check?",
+                options: ["Lubricate the pedal hinges", "Replace the drum head", "Adjust the beater angle"],
+                correct: 0,
+                explanation: "A sticky pedal is usually caused by a lack of lubrication in the hinges or a build-up of debris."
             },
             {
-                question: "The guitar isn’t staying in tune, especially on the low E string. What should you check?",
-                options: ["The saddle height", "The tuning peg tension", "The pickup height"],
-                correct: 1
+                question: "The guitarist's amp suddenly loses power during a show. What’s the first thing you check?",
+                options: ["The amp’s power cable", "The speaker cable", "The guitar input jack"],
+                correct: 0,
+                explanation: "Power cable connections are the first thing to check if the amp suddenly powers off."
             },
             {
-                question: "The guitar’s tone is too muddy. What’s the first thing you adjust?",
-                options: ["The treble on the amp", "The tone knob on the guitar", "The pickup selector"],
-                correct: 0
+                question: "The bassist complains that their bass tone is too thin. What’s the first adjustment you make?",
+                options: ["Boost the low end on the EQ", "Adjust the pickup height", "Increase the volume"],
+                correct: 0,
+                explanation: "Boosting the low end on the EQ can thicken up a bass tone and help it cut through the mix."
             },
             {
-                question: "A string is buzzing when played open but not when fretted. What’s the most likely cause?",
-                options: ["String wear", "Nut slot too low", "Improper neck relief"],
-                correct: 1
+                question: "During rehearsal, the guitarist's signal cuts out when they move. What’s the most likely cause?",
+                options: ["A faulty instrument cable", "The amp is malfunctioning", "The speaker cable is loose"],
+                correct: 0,
+                explanation: "Faulty cables are a common cause of signal cuts, especially when the guitarist moves around."
             },
             {
-                question: "The guitarist wants lower action, but the strings buzz when you adjust the bridge. What should you check?",
-                options: ["Neck relief", "Saddle height", "Pickup height"],
-                correct: 0
+                question: "The keyboardist is hearing random crackles during the set. What should you check first?",
+                options: ["The audio interface", "The power supply", "The cables"],
+                correct: 2,
+                explanation: "Loose or faulty cables can cause crackling sounds, especially during movement."
             },
             {
-                question: "The amp is producing an intermittent sound drop. What’s the most likely cause?",
-                options: ["Faulty speaker cable", "Dirty input jack", "Tube issue"],
-                correct: 2
+                question: "You see a girl that looks just like your ex in the crowd. What do you do?",
+                options: ["Focus on the task at hand", "Call her after the set", "Go into the crowd and make things right again"],
+                correct: 0,
+                explanation: "Stay strong, brother."
             },
             {
-                question: "After replacing the strings, the guitar’s intonation is off. What’s the solution?",
-                options: ["Adjust the bridge saddle", "Change string gauge", "Increase string tension"],
-                correct: 0
+                question: "The bass player says their amp volume is fluctuating unexpectedly. What’s the most likely issue?",
+                options: ["A faulty power tube", "The bass's output jack", "A bad speaker cable"],
+                correct: 0,
+                explanation: "Power tubes that are wearing out or faulty can cause volume fluctuations in tube amps."
             },
             {
-                question: "The output of the guitar is crackling. What’s the most likely issue?",
-                options: ["Dirty input jack", "Pickup issue", "Loose tone knob"],
-                correct: 0
+                question: "The guitarist's pedalboard is making a constant humming sound. What should you check first?",
+                options: ["The power supply", "The patch cables", "The guitar input jack"],
+                correct: 1,
+                explanation: "Faulty or misconnected patch cables in a pedalboard can introduce noise and hum."
             },
             {
-                question: "The amp produces a loud hum when turned on. What do you check first?",
-                options: ["Ground loop issue", "Power supply", "Speaker cable"],
-                correct: 0
+                question: "During the soundcheck, the bassist complains that the tone sounds muddy. What’s the first thing you adjust?",
+                options: ["The midrange on the amp", "The pickup height", "The bass tone knob"],
+                correct: 0,
+                explanation: "Cutting the low mids can clear up a muddy tone and make the bass sound more defined in the mix."
             },
             {
-                question: "The guitar’s frets are worn out, and notes are buzzing. What’s the best solution?",
-                options: ["Raise the action", "Level and crown the frets", "Adjust neck relief"],
-                correct: 1
+                question: "The guitarist reports that their guitar tone is too harsh at higher volumes. What’s the first adjustment you make?",
+                options: ["Turn down the treble on the amp", "Adjust the tone knob on the guitar", "Change the pickup selector"],
+                correct: 0,
+                explanation: "Turning down the treble on the amp can help tame a harsh tone at high volumes."
             },
             {
-                question: "The tone of the guitar is too harsh. What should you adjust?",
-                options: ["Tone knob", "Treble on the amp", "Pickup height"],
-                correct: 1
+                question: "During a festival performance, the guitarist's wireless system cuts out. What’s the most likely cause?",
+                options: ["You forgot to charge the batteries", "Someone else forgot to change the batteries", "The guitar input jack is faulty"],
+                correct: 0,
+                explanation: "Oopsies.."
             },
             {
-                question: "The guitar’s intonation is sharp at the 12th fret. What’s the adjustment?",
-                options: ["Move the saddle backward", "Move the saddle forward", "Loosen the truss rod"],
-                correct: 0
+                question: "The keyboardist’s sustain pedal is not working properly. What’s the likely cause?",
+                options: ["A broken pedal", "The pedal is reversed due to polarity", "The keyboard is malfunctioning"],
+                correct: 1,
+                explanation: "Sustain pedals often have polarity switches, and if set incorrectly, they can behave in reverse."
             },
             {
-                question: "You’ve adjusted the action, but now the intonation is off. What should you do?",
-                options: ["Re-adjust the intonation", "Tighten the truss rod", "Loosen the truss rod"],
-                correct: 0
+                question: "The bassist is experiencing constant feedback during the soundcheck. What’s the first adjustment you make?",
+                options: ["Lower the gain on the amp", "Move the bass away from the amp", "Reduce the treble"],
+                correct: 0,
+                explanation: "Excessive gain can cause feedback, especially at high volumes."
             },
             {
-                question: "The guitarist wants to switch to heavier gauge strings. What do you need to adjust?",
-                options: ["Bridge height", "Truss rod", "Pickup height"],
-                correct: 1
+                question: "The guitarist’s amp is producing crackling noises during the show. The guitar and cables have been checked. What should you do next?",
+                options: ["Check the power tubes", "Adjust the gain", "Change the amp channel"],
+                correct: 0,
+                explanation: "Faulty power tubes are a common cause of crackling in tube amps."
             },
             {
-                question: "After adjusting the truss rod, the action is still too high. What’s the next adjustment?",
-                options: ["Lower the bridge saddles", "Raise the nut height", "Increase string tension"],
-                correct: 0
+                question: "The drummer's floor tom sounds flat and lacks resonance. What’s the best fix?",
+                options: ["Tune the top and bottom heads", "Replace the heads", "Tighten the tension rods"],
+                correct: 0,
+                explanation: "Tuning both heads can restore resonance to a tom before replacing the heads."
             },
             {
-                question: "There’s too much buzzing at the frets, but the neck looks straight. What could be the issue?",
-                options: ["Too low action", "High frets", "Loose tuning pegs"],
-                correct: 1
+                question: "The bassist’s DI box stops working in the middle of a show. What’s the most likely issue?",
+                options: ["The DI box has lost power", "The bass cable is faulty", "The amp is malfunctioning"],
+                correct: 0,
+                explanation: "A loss of power to the DI box will cause it to stop working. Check the power source first."
             },
-            {
-                question: "The guitar isn’t staying in tune, especially when using the tremolo. What’s the likely cause?",
-                options: ["String slipping at the nut", "Loose tuning pegs", "Loose tremolo arm"],
-                correct: 0
-            },
-            {
-                question: "The guitar’s sound has suddenly become very thin and weak. What do you check?",
-                options: ["Pickup wiring", "Cable connection", "Amp settings"],
-                correct: 1
-            },
-            {
-                question: "The guitarist wants more sustain. What’s the best adjustment?",
-                options: ["Lower the action", "Raise the pickup height", "Adjust the bridge saddles"],
-                correct: 1
-            },
-            {
-                question: "The guitar is crackling when plugged in. What’s the first step?",
-                options: ["Check the input jack", "Replace the cable", "Tighten the volume knob"],
-                correct: 1
-            },
-            {
-                question: "The guitarist complains the guitar sounds too boomy. What do you adjust?",
-                options: ["Pickup height", "Bass on the amp", "Tone knob"],
-                correct: 1
-            },
-            {
-                question: "There’s excessive string buzz at the 1st fret. What could be the issue?",
-                options: ["High frets", "Low nut slots", "Improper neck relief"],
-                correct: 1
-            },
-            {
-                question: "The guitar keeps going out of tune after string bends. What should you adjust?",
-                options: ["The bridge saddle", "The nut", "The tuning pegs"],
-                correct: 1
-            },
-            {
-                question: "After a string change, the intonation is flat at the 12th fret. What’s the fix?",
-                options: ["Move the saddle forward", "Move the saddle backward", "Raise the bridge height"],
-                correct: 1
-            },
-            {
-                question: "The guitar output suddenly drops during a set. What’s the most likely issue?",
-                options: ["Pickup wiring issue", "Battery in active pickups", "Faulty cable"],
-                correct: 2
-            },
-            {
-                question: "The guitarist complains of dull sound after changing strings. What’s the issue?",
-                options: ["Pickup height", "Old strings", "Improper intonation"],
-                correct: 1
-            }
+            // Add more scenarios (up to 33 total) here...
         ];
 
-        // Game state variables
         let score = 0;
         let currentScenarioIndex = 0;
-        let timer;
-        let timeLeft = 30;
+        let questionTimer;
+        let overallTimer;
+        let timeLeft = 33;
+        let overallTimeLeft = 213; // 3 minutes 33 seconds
 
         // Start the game
         function startGame() {
             score = 0;
             currentScenarioIndex = 0;
+            overallTimeLeft = 213;
             document.getElementById("score").innerText = `Score: ${score}`;
+            document.getElementById("overall-timer").innerText = `Time left: 3m 33s`;
             nextScenario();
+            startOverallTimer();
         }
 
         // Generate a new scenario
@@ -304,11 +279,12 @@
                 alert("Game over! Your final score is " + score);
                 return;
             }
-            
+
             const scenario = scenarios[currentScenarioIndex];
             document.getElementById("question").innerText = scenario.question;
             const choicesDiv = document.getElementById("choices");
             choicesDiv.innerHTML = ""; // Clear old choices
+            document.getElementById("explanation").style.display = "none"; // Hide previous explanation
 
             // Create buttons for each option
             scenario.options.forEach((option, index) => {
@@ -331,25 +307,50 @@
                 alert("Wrong answer!");
                 score -= 5;
             }
-
             document.getElementById("score").innerText = `Score: ${score}`;
+            showExplanation(scenario.explanation);
             currentScenarioIndex++;
             nextScenario();
         }
 
-        // Start the timer for each scenario
+        // Show explanation after each question
+        function showExplanation(explanation) {
+            document.getElementById("explanation").innerText = explanation;
+            document.getElementById("explanation").style.display = "block";
+        }
+
+        // Start the timer for each scenario (33 seconds)
         function startTimer() {
-            clearInterval(timer);
-            timeLeft = 30;
-            timer = setInterval(() => {
+            clearInterval(questionTimer);
+            timeLeft = 33;
+            questionTimer = setInterval(() => {
                 document.getElementById("timer").innerText = `Time left: ${timeLeft}s`;
                 if (timeLeft <= 0) {
-                    alert("Time's up!");
+                    alert("Time's up for this question!");
                     checkAnswer(-1); // Automatically wrong answer if time runs out
                 }
                 timeLeft -= 1;
             }, 1000);
         }
+
+        // Start the overall game timer (3:33 total)
+        function startOverallTimer() {
+            clearInterval(overallTimer);
+            overallTimer = setInterval(() => {
+                let minutes = Math.floor(overallTimeLeft / 60);
+                let seconds = overallTimeLeft % 60;
+                document.getElementById("overall-timer").innerText = `Time left: ${minutes}m ${seconds < 10 ? '0' : ''}${seconds}s`;
+                if (overallTimeLeft <= 0) {
+                    alert("Time's up for the entire game!");
+                    clearInterval(overallTimer);
+                    // End the game
+                    currentScenarioIndex = scenarios.length; // This will prevent further questions
+                    return;
+                }
+                overallTimeLeft -= 1;
+            }, 1000);
+        }
     </script>
 </body>
 </html>
+

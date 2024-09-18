@@ -202,6 +202,8 @@ function nextScenario() {
 // Check if the selected answer is correct
 function checkAnswer(selectedIndex) {
     const scenario = scenarios[currentScenarioIndex];
+
+    // Display whether the answer was correct or wrong
     if (selectedIndex === scenario.correct) {
         alert("Correct!");
         score += 10;
@@ -210,9 +212,24 @@ function checkAnswer(selectedIndex) {
         score -= 5;
     }
 
+    // Update the score display
     document.getElementById("score").innerText = `Score: ${score}`;
-    currentScenarioIndex++;
-    nextScenario();
+
+    // Always show the explanation
+    showExplanation(scenario.explanation);
+
+    // Move to the next scenario after a short delay to let the user read the explanation
+    setTimeout(() => {
+        currentScenarioIndex++;
+        nextScenario();  // Move to the next question
+    }, 3000); // 3-second delay to allow the player to read the explanation
+}
+
+function showExplanation(explanation) {
+    // Update the explanation text and make sure it's visible
+    const explanationElement = document.getElementById("explanation");
+    explanationElement.innerText = explanation;
+    explanationElement.style.display = "block";  // Ensure the explanation is displayed
 }
 
 // Start the timer for each scenario

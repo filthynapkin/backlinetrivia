@@ -272,7 +272,7 @@
         let timeLeft = 33;
         let overallTimeLeft = 213; // 3 minutes 33 seconds
 
-       // Start the game
+        // Start the game
         function startGame() {
             score = 0;
             currentScenarioIndex = 0;
@@ -285,9 +285,12 @@
 
         // Generate a new scenario
         function nextScenario() {
+            // Increment the scenario index first
+            currentScenarioIndex++;
+
             // Hide the "Next" button
             document.getElementById("next-button").style.display = "none";
-            
+
             // Check if the game is over
             if (currentScenarioIndex >= scenarios.length) {
                 alert("Game over! Your final score is " + score);
@@ -366,4 +369,3 @@
     </script>
 </body>
 </html>
-

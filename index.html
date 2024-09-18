@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Backline Trivia</title>
+    <title>Backline Tech Scenario Game</title>
     <style>
         body {
             background-color: #f0f0f0;
@@ -54,15 +54,10 @@
             background-color: #45a049;
         }
 
-        #timer, #overall-timer, #score {
+        #timer, #score {
             font-size: 1.2em;
             margin-top: 20px;
             color: #555;
-        }
-
-        #timer, #overall-timer {
-            color: #ff4444;
-            font-weight: bold;
         }
 
         #choices button {
@@ -79,10 +74,6 @@
             background-color: #0056b3;
         }
 
-        #choices button:active {
-            background-color: #004085;
-        }
-
         button:disabled {
             background-color: #ccc;
             cursor: not-allowed;
@@ -94,6 +85,20 @@
             background-color: #f1f1f1;
             border-left: 4px solid #4CAF50;
             display: none;
+        }
+
+        /* Style for the horizontal progress bar */
+        #overall-timer-bar-container {
+            width: 100%;
+            height: 20px;
+            background-color: #e0e0e0;
+            margin-top: 20px;
+        }
+
+        #overall-timer-bar {
+            width: 100%;
+            height: 100%;
+            background-color: #4CAF50;
         }
 
         @media screen and (max-width: 600px) {
@@ -119,16 +124,20 @@
 </head>
 <body>
     <div id="game">
-        <h1>Backline Tech Trivia</h1>
+        <h1>Backline Tech Scenario Game</h1>
         <div id="question"></div>
         <div id="choices"></div>
         <div id="explanation"></div>
-        <div id="timer"></div>
-        <div id="overall-timer">Time left: 3m 33s</div>
-        <div id="score">Score: 0</div>
-        <button onclick="startGame()">Start Game</button>
-    </div>
+        <button id="next-button" style="display: none;" onclick="nextScenario()">Next</button>
 
+        <!-- Horizontal progress bar for the overall timer -->
+        <div id="overall-timer-bar-container">
+            <div id="overall-timer-bar"></div>
+        </div>
+
+        <div id="score">Score: 0</div>
+    </div>
+    
     <script>
         // 33 Pre-defined real-world scenarios with explanations
         const scenarios = [

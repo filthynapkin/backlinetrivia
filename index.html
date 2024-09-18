@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guitar Tech Game</title>
+	<style>
+    body {
+    background-color: #f0f0f0;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+#game {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #333;
+    font-size: 2.2em;
+    margin-bottom: 20px;
+}
+
+#question {
+    font-size: 1.3em;
+    color: #444;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+button {
+    display: inline-block;
+    font-size: 1em;
+    padding: 10px 20px;
+    margin: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#timer, #score {
+    font-size: 1.2em;
+    margin-top: 20px;
+    color: #555;
+}
+
+#timer {
+    color: #ff4444;
+    font-weight: bold;
+}
+
+#choices button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 10px;
+    background-color: #007BFF;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+#choices button:hover {
+    background-color: #0056b3;
+}
+
+#choices button:active {
+    background-color: #004085;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+@media screen and (max-width: 600px) {
+    #game {
+        padding: 15px;
+        margin: 20px;
+    }
+    
+    h1 {
+        font-size: 1.8em;
+    }
+    
+    button {
+        font-size: 0.9em;
+        padding: 8px 15px;
+    }
+    
+    #question {
+        font-size: 1.1em;
+    }
+}
+<style>
+</head>
+<body>
+    <div id="game">
+        <h1>Guitar Tech Scenario Game</h1>
+        <div id="question"></div>
+        <div id="choices"></div>
+        <div id="timer"></div>
+        <div id="score">Score: 0</div>
+        <button onclick="startGame()">Start Game</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
